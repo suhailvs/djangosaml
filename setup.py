@@ -1,20 +1,22 @@
-from codecs import open
+from io import open
 from setuptools import (setup, find_packages)
 from os import path
 
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
-
+def read(f):
+    with open(f, 'r', encoding='utf-8') as file:
+        return file.read()
+    
 setup(
     name='djangosaml',
-    version='1.0.0',
+    version='1.0.1',
     description='Django SAML2 Authentication Made Easy. Easily integrate with SAML2 SSO identity providers like Okta',
-    long_description=long_description,
+    long_description=read('README.md'),
+    long_description_content_type='text/markdown',
 
-    url='https://github.com/suhailvs/djangosaml',
+    url='https://djangosaml.readthedocs.io/en/latest/',
 
     author='Fang Li & Suhail vs',
     author_email='suhailvs@gmail.com',
