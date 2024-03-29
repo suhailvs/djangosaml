@@ -1,17 +1,26 @@
-# [Django SAML2][docs]
+# [Django SAML][docs]
 
 
-**Django SAML2 Authentication Made Easy.**
+**Django SAML Authentication Made Easy.**
 
 Full documentation for the project is available at [https://djangosaml.readthedocs.io/en/latest/][docs].
+
+[![Python Version](https://img.shields.io/pypi/pyversions/djangosaml.svg)](https://pypi.python.org/pypi/djangosaml)
+
+[![Pypi](https://img.shields.io/pypi/v/djangosaml.svg)](https://pypi.python.org/pypi/djangosaml)
+
+[![Downloads](https://img.shields.io/pypi/dm/djangosaml.svg)](https://pypi.python.org/pypi/djangosaml)
 
 
 ## Requirements
 
 * Python 3.6+
 * Django 5.0, 4.2, 4.1, 4.0, 3.2, 3.1, 3.0
-* PySAML2 >= 4.5.0
-* xmlsec1 can be installed using:
+
+
+
+## Installation
+`xmlsec1` is required by pysaml2:
 ```
     apt install xmlsec1
     // or
@@ -19,8 +28,6 @@ Full documentation for the project is available at [https://djangosaml.readthedo
     // or
     brew install xmlsec1
 ```
-
-## Installation
 
 Install using `pip`...
 
@@ -37,13 +44,13 @@ INSTALLED_APPS = [
 Now update your root `urls.py`:
 
 ```python
-import django_saml2_auth.views
+import djangosaml.views
 urlpatterns = [
     ...
     path('djangosaml/', include('djangosaml.urls')),
     # The following line will replace the default user login with SAML2 (optional)
     # If you want to specific the after-login-redirect-URL, use parameter "?next=/the/path/you/want"
-    path('login/', django_saml2_auth.views.signin),
+    path('login/', djangosaml.views.signin),
 ]
 ```
 Copy your `metadata.xml` into root directory.
@@ -55,7 +62,7 @@ SAML2_AUTH = {
     # Metadata is required, local file path
     'METADATA_LOCAL_FILE_PATH': BASE_DIR / 'metadata.xml',
     # Populates the Issuer element in authn request
-    'ENTITY_ID': 'https://your-domain/saml2_auth/acs/',
+    'ENTITY_ID': 'https://your-domain/djangosaml/acs/',
     # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
     'ATTRIBUTES_MAP': { 
         'email': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
@@ -67,11 +74,10 @@ SAML2_AUTH = {
 
 ```
 
-In your SAML2 SSO identity provider, set the Single-sign-on URL and Audience
-   URI(SP Entity ID) to:
+In your SAML2 SSO identity provider, set the Single-sign-on URL and Audience URI(SP Entity ID) to:
 
 ```
-https://your-domain/saml2_auth/acs/
+https://your-domain/djangosaml/acs/
 ```
 
 
