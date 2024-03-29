@@ -6,24 +6,26 @@ Usage
 Installation
 ------------
 
-1. `xmlsec1` is required by pysaml2:
+1. **xmlsec1** is required by pysaml2:
 
 .. code-block:: console
 
-   (.venv) $ apt install xmlsec1
+   $ apt install xmlsec1
    // or
-   (.venv) $ yum install xmlsec1
+   $ yum install xmlsec1
    // or
-   (.venv) $ brew install xmlsec1
+   $ brew install xmlsec1
 
-2. Install using `pip`: 
+2. Install using **pip**: 
+
 .. code-block:: console
 
-   (.venv) $ pip install djangosaml
+   $ pip install djangosaml
 
 
-3. Add `'djangosaml'` to your `INSTALLED_APPS` setting.
-.. code-block:: python
+3. Add **'djangosaml'** to your **INSTALLED_APPS** setting.
+
+.. code-block:: 
 
    INSTALLED_APPS = [
       ...
@@ -31,8 +33,9 @@ Installation
    ]
 
 
-4. Now update your root `urls.py`:
-.. code-block:: python
+4. Now update your root **urls.py**:
+
+.. code-block:: 
 
    import djangosaml.views
    urlpatterns = [
@@ -43,10 +46,14 @@ Installation
       path('login/', djangosaml.views.signin),
    ]
 
-5. Copy your `metadata.xml` into root directory.
+SAML Usage
+----------
 
-6. In `settings.py`, add the SAML2 related configuration.
-.. code-block:: python
+5. Copy your **metadata.xml** into root directory.
+
+6. In **settings.py**, add the SAML2 related configuration.
+
+.. code-block:: 
 
    SAML2_AUTH = {
       # Metadata is required, local file path
