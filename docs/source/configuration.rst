@@ -10,7 +10,7 @@ Configuration in settings.py
         # Metadata is required, choose either remote url or local file path
         'METADATA_AUTO_CONF_URL': '[The auto(dynamic) metadata configuration URL of SAML2]',
         'METADATA_LOCAL_FILE_PATH': '[The metadata configuration file path]',
-
+        'ENTITY_ID': 'https://mysite.com/djangosaml/acs/', # Populates the Issuer element in authn request
         # Optional settings below
         'DEFAULT_NEXT_URL': '/admin',  # Custom target redirect URL after the user get logged in. Default to /admin if not set. This setting will be overwritten if you have parameter ?next= specificed in the login URL.
         'CREATE_USER': 'TRUE', # Create a new Django user when a new user logs in. Defaults to True.
@@ -30,10 +30,8 @@ Configuration in settings.py
             'CREATE_USER': 'path.to.your.new.user.hook.method',
             'BEFORE_LOGIN': 'path.to.your.login.hook.method',
         },
-        'ASSERTION_URL': 'https://mysite.com', # Custom URL to validate incoming SAML requests against
-        'ENTITY_ID': 'https://mysite.com/saml2_auth/acs/', # Populates the Issuer element in authn request
+        'ASSERTION_URL': 'https://mysite.com', # Custom URL to validate incoming SAML requests against        
         'NAME_ID_FORMAT': FormatString, # Sets the Format property of authn NameIDPolicy element
-        'FRONTEND_URL': 'https://myfrontendclient.com', # Redirect URL for the client if you are using JWT auth with DRF. See explanation below
     }
 
 
@@ -75,7 +73,3 @@ behind a reverse proxy.
 
 **NAME_ID_FORMAT** Set to the string 'None', to exclude sending the 'Format' property of the 'NameIDPolicy' element in authn requests.
 Default value if not specified is 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient'.
-
-**FRONTEND_URL** If USE_JWT is True, you should set the URL of where your frontend is located (will default to DEFAULT_NEXT_URL if you fail to do so). Once the client is authenticated through the SAML/SSO, your client is redirected to the FRONTEND_URL with the user id (uid) and JWT token (token) as query parameters.
-Example: 'https://myfrontendclient.com/?uid=<user id>&token=<jwt token>'
-With these params your client can now authenticate will server resources.

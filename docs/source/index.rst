@@ -8,7 +8,7 @@ how to :ref:`installation` the project.
 
 .. note::
 
-   This project is under active development.
+   This project is planning to use in production in SIB bank.
 
 Contents
 --------

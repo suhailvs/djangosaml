@@ -46,30 +46,48 @@ Installation
       path('login/', djangosaml.views.signin),
    ]
 
-SAML Usage
-----------
+Demo using mocksaml.com
+-----------------------
 
-5. Copy your **metadata.xml** into root directory.
+Go to https://mocksaml.com/ and click **Download Metadata** button to download the metadata
+and save it as `metadata.xml` into project root directory.
 
-6. In **settings.py**, add the SAML2 related configuration.
+
+In **settings.py**, add the SAML2 related configuration.
 
 .. code-block:: 
 
    SAML2_AUTH = {
-      # Metadata is required, local file path
+      # The Metadata downloaded from https://mocksaml.com/
       'METADATA_LOCAL_FILE_PATH': BASE_DIR / 'metadata.xml',
       # Populates the Issuer element in authn request
       'ENTITY_ID': 'https://your-domain/djangosaml/acs/',
-      # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
-      'ATTRIBUTES_MAP': { 
-         'email': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
-         'username': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
-         'first_name': 'http://schemas.auth0.com/nickname',
-         'last_name': 'http://schemas.auth0.com/nickname',
+      # This is mocksaml.com's Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
+      'ATTRIBUTES_MAP': {
+         'email': 'email',
+         'username': 'id',
+         'first_name': 'firstName',
+         'last_name': 'lastName',
       },
    }
 
-7. In your SAML2 SSO identity provider, set the Single-sign-on URL and Audience URI(SP Entity ID) to:
-::
+Run the server
 
-   https://your-domain/djangosaml/acs/
+.. code-block:: 
+    
+   $ python manage.py runserver
+
+You need to run it as https. So on another terminal run
+
+.. code-block:: 
+
+   $ ssh -R 80:localhost:8000 nokey@localhost.run
+
+You will see a link like https://3975b038285914.lhr.life 
+
+You need to update in **settings.py**, 
+
+- SAML2_AUTH's ENTITY_ID=https://3975b038285914.lhr.life/djangosaml/acs/
+- ALLOWED_HOSTS = ['*']
+
+That is it, now you can now login using https://3975b038285914.lhr.life/login/
