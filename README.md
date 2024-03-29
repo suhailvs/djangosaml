@@ -65,10 +65,10 @@ SAML2_AUTH = {
     'ENTITY_ID': 'https://your-domain/djangosaml/acs/',
     # Change Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
     'ATTRIBUTES_MAP': { 
-        'email': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress',
-        'username': 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier',
-        'first_name': 'http://schemas.auth0.com/nickname',
-        'last_name': 'http://schemas.auth0.com/nickname',
+        'email': '',
+        'username': '',
+        'first_name': '',
+        'last_name': '',
     },
 }
 
