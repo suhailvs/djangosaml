@@ -3,8 +3,8 @@
 # -- Project information
 
 project = 'DjangoSaml'
-copyright = '2024, Suhail vs'
-author = 'Suhail vs'
+copyright = '2024'
+author = 'Anonymous'
 
 release = '0.1'
 version = '0.1.1'

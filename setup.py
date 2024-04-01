@@ -18,8 +18,8 @@ setup(
 
     url='https://djangosaml.readthedocs.io/en/latest/',
 
-    author='Fang Li & Suhail vs',
-    author_email='suhailvs@gmail.com',
+    author='Fang Li',
+    author_email='lorenzo.gil.sanchez@gmail.com',
 
     license='Apache 2.0',
 

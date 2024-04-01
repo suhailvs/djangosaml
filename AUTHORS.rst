@@ -10,7 +10,7 @@ Django Saml2 Auth
 Django Saml
 -----------
 
-- Suhail vs
+- Fang Li
 
 Pysaml2
 -------
