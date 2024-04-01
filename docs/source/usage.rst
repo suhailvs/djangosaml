@@ -37,13 +37,9 @@ Installation
 
 .. code-block:: 
 
-   import djangosaml.views
    urlpatterns = [
       ...
       path('djangosaml/', include('djangosaml.urls')),
-      # The following line will replace the default user login with SAML2 (optional)
-      # If you want to specific the after-login-redirect-URL, use parameter "?next=/the/path/you/want"
-      path('login/', djangosaml.views.signin),
    ]
 
 Demo using mocksaml.com
@@ -77,4 +73,4 @@ Run the server
    $ python manage.py runserver
 
 
-That is it, now you can now login using http://localhost:8000/login/
+That is it, now you can now login using http://localhost:8000/djangosaml/login/
