@@ -58,10 +58,9 @@ In **settings.py**, add the SAML2 related configuration.
 .. code-block:: 
 
    SAML2_AUTH = {
-      # The Metadata downloaded from https://mocksaml.com/
+      # Path of metadata.xml file downloaded from https://mocksaml.com/
       'METADATA_LOCAL_FILE_PATH': BASE_DIR / 'metadata.xml',
-      # Populates the Issuer element in authn request
-      'ENTITY_ID': 'https://your-domain/djangosaml/acs/',
+      'ENTITY_ID': 'http://localhost:8000/djangosaml/acs/',
       # This is mocksaml.com's Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
       'ATTRIBUTES_MAP': {
          'email': 'email',
@@ -77,17 +76,5 @@ Run the server
     
    $ python manage.py runserver
 
-You need to run it as https. So on another terminal run
 
-.. code-block:: 
-
-   $ ssh -R 80:localhost:8000 nokey@localhost.run
-
-You will see a link like https://3975b038285914.lhr.life 
-
-You need to update in **settings.py**, 
-
-- SAML2_AUTH's ENTITY_ID=https://3975b038285914.lhr.life/djangosaml/acs/
-- ALLOWED_HOSTS = ['*']
-
-That is it, now you can now login using https://3975b038285914.lhr.life/login/
+That is it, now you can now login using http://localhost:8000/login/
