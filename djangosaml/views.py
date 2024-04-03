@@ -19,7 +19,7 @@ from django.contrib.auth import login, logout, get_user_model
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.template import TemplateDoesNotExist
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.utils.http import url_has_allowed_host_and_scheme
 # from rest_auth.utils import jwt_encode
 
@@ -198,7 +198,8 @@ def acs(r):
         login(r, target_user)
     else:
         return HttpResponseRedirect(get_reverse([denied, 'denied', 'djangosaml:denied']))
-
+    if settings.SAML2_AUTH.get('IS_SIB') is True:
+        return HttpResponse(f"<script nonce='{r.csp_nonce}'>window.location = '/djangosaml/login_redirect/';</script>")
     # if settings.SAML2_AUTH.get('USE_JWT') is True:
     #     # We use JWT auth send token to frontend
     #     jwt_token = jwt_encode(target_user)

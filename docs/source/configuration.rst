@@ -59,12 +59,31 @@ identity provider, representing the user's identity.
 method will be called before the new user is logged in and after the user's
 record is created. This method should accept ONE parameter of user dict.
 
+.. code-block:: 
+
+    # create a file `djangosaml_hook.py` in root folder
+    from django.contrib.auth import get_user_model
+
+    def update_user_permission(params):
+        print(params)
+        User = get_user_model()
+        username_var = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        permission_class = 'http://schemas.auth0.com/role'
+        user = User.objects.filter(username=params[username_var][0])
+        user.update(last_name=params[permission_class][0])
+
+.. code-block::
+
+    'TRIGGER': {
+        'CREATE_USER': 'djangosaml_hook.update_user_permission',
+    }
+
 **TRIGGER.BEFORE_LOGIN** A method to be called when an existing user logs in.
 This method will be called before the user is logged in and after user
 attributes are returned by the SAML2 identity provider. This method should accept ONE parameter of user dict.
 
 **ASSERTION_URL** A URL to validate incoming SAML responses against. By default,
-django-saml2-auth will validate the SAML response's Service Provider address
+djangosaml will validate the SAML response's Service Provider address
 against the actual HTTP request's host and scheme. If this value is set, it
 will validate against ASSERTION_URL instead - perfect for when django running
 behind a reverse proxy.
