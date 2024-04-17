@@ -46,7 +46,7 @@ Demo using mocksaml.com
 -----------------------
 
 Go to https://mocksaml.com/ and click **Download Metadata** button to download the metadata
-and save it as `metadata.xml` into project root directory.
+and save it as `mock-saml-metadata.xml` into project root directory.
 
 
 In **settings.py**, add the SAML2 related configuration.
@@ -55,7 +55,7 @@ In **settings.py**, add the SAML2 related configuration.
 
    SAML2_AUTH = {
       # Path of metadata.xml file downloaded from https://mocksaml.com/
-      'METADATA_LOCAL_FILE_PATH': BASE_DIR / 'metadata.xml',
+      'METADATA_LOCAL_FILE_PATH': BASE_DIR / 'mock-saml-metadata.xml',
       'ENTITY_ID': 'http://localhost:8000/djangosaml/acs/',
       # This is mocksaml.com's Email/UserName/FirstName/LastName to corresponding SAML2 userprofile attributes.
       'ATTRIBUTES_MAP': {
