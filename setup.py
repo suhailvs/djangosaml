@@ -11,7 +11,7 @@ def read(f):
     
 setup(
     name='djangosaml',
-    version='1.0.3',
+    version='1.0.5',
     description='Django SAML2 Authentication Made Easy. Easily integrate with SAML2 SSO identity providers like Okta',
     long_description=read('README.md'),
     long_description_content_type='text/markdown',

@@ -159,20 +159,22 @@ def acs(r):
     next_url = r.session.get('login_next_url', _default_next_url())
 
     if not resp:
-        return HttpResponseRedirect(get_reverse([denied, 'denied', 'djangosaml:denied']))
+        return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=1_no_response")
     authn_response = saml_client.parse_authn_request_response(
         resp, entity.BINDING_HTTP_POST)
     if authn_response is None:
-        return HttpResponseRedirect(get_reverse([denied, 'denied', 'djangosaml:denied']))
+        return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=2_no_authresponse")
 
     user_identity = authn_response.get_identity()
     if user_identity is None:
-        return HttpResponseRedirect(get_reverse([denied, 'denied', 'djangosaml:denied']))
+        return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=3_user_identity")
     print('Django SAML User details')
     print('='*100)    
     print(user_identity)
-    
-    user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'UserName')][0]
+    try:
+        user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'UserName')][0]
+    except:
+        return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=4_user_name_attribute_wrong")
     target_user = None
     is_new_user = False
 
@@ -191,7 +193,7 @@ def acs(r):
                 import_string(settings.SAML2_AUTH['TRIGGER']['CREATE_USER'])(user_identity)
             is_new_user = True
         else:
-            return HttpResponseRedirect(get_reverse([denied, 'denied', 'djangosaml:denied']))
+            return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=5_user_doesnt_exists")
 
     r.session.flush()
 
@@ -199,7 +201,7 @@ def acs(r):
         target_user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(r, target_user)
     else:
-        return HttpResponseRedirect(get_reverse([denied, 'denied', 'djangosaml:denied']))
+        return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=6_user_not_active")
     if settings.SAML2_AUTH.get('IS_SIB') is True:
         return HttpResponse(f"<script nonce='{r.csp_nonce}'>window.location = '/djangosaml/login_redirect/';</script>")
     # if settings.SAML2_AUTH.get('USE_JWT') is True:
