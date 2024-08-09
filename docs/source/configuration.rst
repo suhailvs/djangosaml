@@ -13,7 +13,9 @@ Configuration in settings.py
         'ENTITY_ID': 'https://mysite.com/djangosaml/acs/', # Populates the Issuer element in authn request
         # Optional settings below
         'DEFAULT_NEXT_URL': '/admin',  # Custom target redirect URL after the user get logged in. Default to /admin if not set. This setting will be overwritten if you have parameter ?next= specificed in the login URL.
-        'CREATE_USER': 'TRUE', # Create a new Django user when a new user logs in. Defaults to True.
+        'CREATE_USER': True, # Create a new Django user when a new user logs in. Defaults to True.
+        'IS_SIB': True, # SIB bank specific item. if True then success customer will redirect to '/djangosaml/login_redirect/'
+        'SAML_CONFIG': True, # if False then SAML Authentication will be disabled
         'NEW_USER_PROFILE': {
             'USER_GROUPS': [],  # The default group name when a new user logs in
             'ACTIVE_STATUS': True,  # The default active status for new users
@@ -30,10 +32,10 @@ Configuration in settings.py
             'CREATE_USER': 'path.to.your.new.user.hook.method',
             'BEFORE_LOGIN': 'path.to.your.login.hook.method',
         },
+        
         'ASSERTION_URL': 'https://mysite.com', # Custom URL to validate incoming SAML requests against        
         'NAME_ID_FORMAT': FormatString, # Sets the Format property of authn NameIDPolicy element
     }
-
 
 
 Explanation
@@ -44,6 +46,22 @@ Explanation
 **METADATA_LOCAL_FILE_PATH** SAML2 metadata configuration file path
 
 **CREATE_USER** Determines if a new Django user should be created for new users.
+
+**IS_SIB** SIB bank specific item. If True, when SAML login is success, 
+then will redirect to **/djangosaml/login_redirect/**.
+The url must be defined in your app. Here is an example of  url and view
+
+.. code-block::
+
+    # urls.py
+    path('djangosaml/login_redirect/', logged_in), 
+    
+    # views.py
+    def logged_in(request):
+        if request.user:
+            if request.user.permission_class == "admin":
+                return redirect('/adminapi/)
+
 
 **NEW_USER_PROFILE** Default settings for newly created users
 

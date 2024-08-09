@@ -154,6 +154,8 @@ def _create_new_user(username, email, firstname, lastname):
 
 @csrf_exempt
 def acs(r):
+    if settings.SAML2_AUTH.get('SAML_CONFIG') is False:
+        return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=saml_loggin_disabled")
     saml_client = _get_saml_client(get_current_domain(r))
     resp = r.POST.get('SAMLResponse', None)
     next_url = r.session.get('login_next_url', _default_next_url())
