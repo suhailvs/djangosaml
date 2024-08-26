@@ -152,12 +152,34 @@ def _create_new_user(username, email, firstname, lastname):
     return user
 
 
+
+def get_username(resp):
+    import xml.etree.ElementTree as ET
+    import base64
+    xml_response = base64.b64decode(resp)
+    tree = ET.fromstring(xml_response)
+    namespace = {
+        'samlp': 'urn:oasis:names:tc:SAML:2.0:protocol',
+        'saml': 'urn:oasis:names:tc:SAML:2.0:assertion',
+        'xs': 'http://www.w3.org/2001/XMLSchema',
+        'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+        'ds': 'http://www.w3.org/2000/09/xmldsig#'
+    }
+    attribute_statement = tree.find('.//saml:AttributeStatement', namespace)
+    if attribute_statement is not None:
+        attribute_value = attribute_statement.find('.//saml:AttributeValue', namespace)
+        return attribute_value.text
+    return None
+    
 @csrf_exempt
 def acs(r):
     if settings.SAML2_AUTH.get('SAML_CONFIG') is False:
         return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=saml_loggin_disabled")
     saml_client = _get_saml_client(get_current_domain(r))
     resp = r.POST.get('SAMLResponse', None)
+    print('SAML Response')
+    print('='*100)
+    print(resp)
     next_url = r.session.get('login_next_url', _default_next_url())
 
     if not resp:
@@ -176,6 +198,9 @@ def acs(r):
     try:
         user_name = user_identity[settings.SAML2_AUTH.get('ATTRIBUTES_MAP', {}).get('username', 'UserName')][0]
     except:
+        user_name = get_username(resp)
+    
+    if not user_name:
         return HttpResponseRedirect(f"{get_reverse([denied, 'denied', 'djangosaml:denied'])}?step=4_user_name_attribute_wrong")
     target_user = None
     is_new_user = False
